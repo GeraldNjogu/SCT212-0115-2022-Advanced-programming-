@@ -1,6 +1,6 @@
 // Create the InsufficientFundsException Class: Define a custom exception class to
 handle insufficient funds during transactions.
-java
+
 public class InsufficientFundsException extends Exception {
 public InsufficientFundsException(String message) {
 super(message);
@@ -8,7 +8,7 @@ super(message);
 }
 // Modify the WithdrawalTransaction Class: Implement an overloaded apply() method
 that checks the balance and handles insufficient funds.
-java
+
 import java.util.Calendar;
 public class WithdrawalTransaction extends BaseTransaction {
 private boolean reversed = false;
@@ -69,7 +69,7 @@ return false;
 }
 // Update the BankAccount Class: Ensure it has methods for deposits and withdrawals
 with proper exception handling.
-java
+
 public class BankAccount {
 private double balance;
 public BankAccount(double initialBalance) {
@@ -90,9 +90,9 @@ public double getBalance() {
 return balance;
 }
 }
-//Client Code: Demonstrate the functionality, including handling the insufficient funds
-scenario.
-java
+//Client Code: Demonstrate the functionality, including handling insufficient funds.
+
+
 import java.util.Calendar;
 public class Main {
 public static void main(String[] args) {

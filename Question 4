@@ -1,0 +1,44 @@
+import java.util.Calendar;
+
+public class Main {
+    public static void main(String[] args) throws InsufficientFundsException {
+        // Step 1: Create a BankAccount object
+        BankAccount account = new BankAccount("123456", 1000.00);
+
+        // Step 2: Create and apply a DepositTransaction as a BaseTransaction (Polymorphism)
+        BaseTransaction deposit = new DepositTransaction(200.00, Calendar.getInstance(), "TXN123");
+        deposit.apply(account);
+        deposit.printTransactionDetails();
+
+        // Step 3: Create a WithdrawalTransaction and treat it as a BaseTransaction
+        BaseTransaction withdrawal = new WithdrawalTransaction(300.00, Calendar.getInstance(), "TXN124");
+
+        // Using type casting to cast back to WithdrawalTransaction to access the reverse functionality
+        if (withdrawal instanceof WithdrawalTransaction) {
+            try {
+                withdrawal.apply(account);  // Attempt full withdrawal
+            } catch (InsufficientFundsException e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+            withdrawal.printTransactionDetails();
+
+            // Cast withdrawal back to WithdrawalTransaction to call reverse()
+            WithdrawalTransaction withdrawalTransaction = (WithdrawalTransaction) withdrawal;
+            boolean reversed = withdrawalTransaction.reverse(account);  // Attempt to reverse the withdrawal
+            System.out.println("Reversal successful? " + reversed);
+        }
+
+        // Step 4: Test Partial Withdrawal with allowPartialWithdrawal flag
+        WithdrawalTransaction largeWithdrawal = new WithdrawalTransaction(1500.00, Calendar.getInstance(), "TXN125");
+        largeWithdrawal.apply(account, true);  // Allow partial withdrawal if full amount isn't available
+        largeWithdrawal.printTransactionDetails();
+
+        // Step 5: Attempt to reverse the same transaction again to verify prevention of multiple reversals
+        boolean secondReversal = largeWithdrawal.reverse(account);
+        System.out.println("Second reversal successful? " + secondReversal);
+
+        // Step 6: Display the Final Account Balance
+        System.out.println("Final Account Balance: " + account.getBalance());
+    }
+}
+

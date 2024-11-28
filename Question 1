@@ -1,6 +1,6 @@
 // Define the Interface: Create an interface named TransactionInterface with abstract
 methods.
-java
+
 import java.util.Calendar;
 public interface TransactionInterface {
 double getAmount();
@@ -11,7 +11,7 @@ void apply(BankAccount ba);
 }
 //Concrete Class: BaseTransaction Implement the interface in your BaseTransaction
 class.
-java
+
 import java.util.Calendar;
 public class BaseTransaction implements TransactionInterface {
 protected double amount;
@@ -48,7 +48,6 @@ public void apply(BankAccount ba) {
 }
 //Derived Classes: DepositTransaction and WithdrawalTransaction Override the
 apply method in the derived classes.
-java
 import java.util.Calendar;
 public class DepositTransaction extends BaseTransaction {
 public DepositTransaction(double amount, Calendar date, String
@@ -74,7 +73,6 @@ System.out.println("Withdrew: " + amount);
 }
 // Custom Exception Class: Create a custom exception class to handle specific
 transaction-related errors.
-java
 public class InsufficientFundsException extends Exception {
 public InsufficientFundsException(String message) {
 super(message);
@@ -82,7 +80,6 @@ super(message);
 }
 // Handling Exceptions: Demonstrate the use of the custom exception in your transaction
 methods.
-java
 public class BankAccount {
 private double balance;
 public BankAccount(double initialBalance) {
@@ -104,7 +101,6 @@ return balance;
 }
 }
 // Client Code: Implement client code to demonstrate the functionality.
-java
 import java.util.Calendar;
 public class Main {
 public static void main(String[] args) {

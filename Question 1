@@ -1,117 +1,85 @@
-// Define the Interface: Create an interface named TransactionInterface with abstract
-methods.
+import java.util.Calendar;
 
-import java.util.Calendar;
-public interface TransactionInterface {
-double getAmount();
-Calendar getDate();
-String getTransactionID();
-void printTransactionDetails();
-void apply(BankAccount ba);
+interface TransactionInterface {
+    double getAmount();
+    Calendar getDate();
+    String getTransactionID();
+    void printTransactionDetails();
+    void apply(BankAccount ba);
 }
-//Concrete Class: BaseTransaction Implement the interface in your BaseTransaction
-class.
 
-import java.util.Calendar;
-public class BaseTransaction implements TransactionInterface {
-protected double amount;
-protected Calendar date;
-protected String transactionID;
-public BaseTransaction(double amount, Calendar date, String
-transactionID) {
-this.amount = amount;
-this.date = date;
-this.transactionID = transactionID;
+class BankAccount {
+    private String accountNumber;
+    private double balance;
+
+    public BankAccount(String accountNumber, double balance) {
+        this.accountNumber = accountNumber;
+        this.balance = balance;
+    }
+
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void deposit(double amount) {
+        balance += amount;
+    }
+
+    public void withdraw(double amount) {
+        balance -= amount;
+    }
 }
-@Override
-public double getAmount() {
-return amount;
+
+class BaseTransaction implements TransactionInterface {
+    private double amount;
+    private Calendar date;
+    private String transactionID;
+
+    public BaseTransaction(double amount, Calendar date, String transactionID) {
+        this.amount = amount;
+        this.date = date;
+        this.transactionID = transactionID;
+    }
+
+    @Override
+    public double getAmount() {
+        return amount;
+    }
+
+    @Override
+    public Calendar getDate() {
+        return date;
+    }
+
+    @Override
+    public String getTransactionID() {
+        return transactionID;
+    }
+
+    @Override
+    public void printTransactionDetails() {
+        System.out.println("Transaction ID: " + transactionID);
+        System.out.println("Date: " + date.getTime());
+        System.out.println("Amount: " + amount);
+    }
+
+    @Override
+    public void apply(BankAccount ba) {
+        System.out.println("BaseTransaction apply() method called.");
+    }
 }
-@Override
-public Calendar getDate() {
-return date;
-}
-@Override
-public String getTransactionID() {
-return transactionID;
-}
-@Override
-public void printTransactionDetails() {
-System.out.println("Transaction ID: " + transactionID);
-System.out.println("Amount: " + amount);
-System.out.println("Date: " + date.getTime());
-}
-@Override
-public void apply(BankAccount ba) {
-// Default apply implementation for BaseTransaction
-}
-}
-//Derived Classes: DepositTransaction and WithdrawalTransaction Override the
-apply method in the derived classes.
-import java.util.Calendar;
-public class DepositTransaction extends BaseTransaction {
-public DepositTransaction(double amount, Calendar date, String
-transactionID) {
-super(amount, date, transactionID);
-}
-@Override
-public void apply(BankAccount ba) {
-ba.deposit(amount);
-System.out.println("Deposited: " + amount);
-}
-}
-public class WithdrawalTransaction extends BaseTransaction {
-public WithdrawalTransaction(double amount, Calendar date, String
-transactionID) {
-super(amount, date, transactionID);
-}
-@Override
-public void apply(BankAccount ba) {
-ba.withdraw(amount);
-System.out.println("Withdrew: " + amount);
-}
-}
-// Custom Exception Class: Create a custom exception class to handle specific
-transaction-related errors.
-public class InsufficientFundsException extends Exception {
-public InsufficientFundsException(String message) {
-super(message);
-}
-}
-// Handling Exceptions: Demonstrate the use of the custom exception in your transaction
-methods.
-public class BankAccount {
-private double balance;
-public BankAccount(double initialBalance) {
-this.balance = initialBalance;
-}
-public void deposit(double amount) {
-balance += amount;
-}
-public void withdraw(double amount) throws
-InsufficientFundsException {
-if (amount > balance) {
-throw new InsufficientFundsException("Insufficient funds
-for withdrawal");
-}
-balance -= amount;
-}
-public double getBalance() {
-return balance;
-}
-}
-// Client Code: Implement client code to demonstrate the functionality.
-import java.util.Calendar;
+
 public class Main {
-public static void main(String[] args) {
-BankAccount account = new BankAccount(1000);
-Calendar date = Calendar.getInstance();
-DepositTransaction deposit = new DepositTransaction(200, date,
-"TXN001");
-WithdrawalTransaction withdrawal = new
-WithdrawalTransaction(150, date, "TXN002");
-deposit.apply(account);
-withdrawal.apply(account);
-System.out.println("Final Balance: " + account.getBalance());
-}
+    public static void main(String[] args) {
+        BankAccount account = new BankAccount("12345", 1000.0);
+        Calendar date = Calendar.getInstance();
+
+        BaseTransaction transaction = new BaseTransaction(500.0, date, "TXN001");
+        transaction.apply(account);
+        transaction.printTransactionDetails();
+    }
 }
